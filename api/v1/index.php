@@ -4,22 +4,32 @@ declare(strict_types=1);
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-require '../vendor/autoload.php';
+require '../../vendor/autoload.php';
 
 $app = new \Slim\App;
-$uri = new Olx\UriParser\Uri();
 
-$app->get('/', function (Request $request, Response $response, $args) {
-    $response->write("Welcome to Slimek!");
+
+/**
+ * Get components of parser URI
+ *
+ * Param urlRef - urlencoded string which is the URI to parse
+ * If success then return components after parse
+ */
+$app->get('/parser', function (Request $request, Response $response, array $args) use ($app): Response {
+    $uriRef = $request->getQueryParam('uri');
+
+    $uri = new Pshemo\UriParser\Uri();
+    try {
+        $components = $uri->parse($uriRef);
+        $response->getBody()->write(json_encode($components));
+    } catch (Exception $e) {
+        return $response->withJson([
+            'error'=> $e->getMessage(),
+            'code'=>422
+        ], 422);
+    }
+
     return $response;
 });
 
-
-$app->get('/validate/{uriRef}', function (Request $request, Response $response) {
-    $uriRef = $request->getAttribute('uriRef');
-    $result = \Olx\UriParser\Uri::isValid($uriRef);
-    $response->getBody()->write(json_encode($result));
-
-    return $response;
-});
 $app->run();

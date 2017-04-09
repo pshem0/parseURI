@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Olx\UriParser;
+namespace Pshemo\UriParser;
 
 use InvalidArgumentException;
 
 /**
+ * Exceptions thrown while processing invalid URIs
  *
  * @see https://tools.ietf.org/html/rfc3986
  */
