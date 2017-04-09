@@ -19,7 +19,9 @@ Provide simple RESTful API available via GET method at:
 /api/v1/parser?uri={URI}
 ```
 The response deliver JSON with components of provided URI or 422 error code if URI is mallformed.
- 
+Used [Slim microframework](http://www.slimframework.com/) which provides router that maps route callback to specified 
+HTTP method and URI and to encapsulate response in JSON format.
+
 Example
 --------
 In `/public` directory you can find simple form to validate and parse URIs.
